@@ -1,0 +1,3 @@
+---
+ntpsec_client_servers:
+  - 'time.cloudflare.com:1234'

@@ -1,0 +1,44 @@
+---
+- name: 'gather os specific variables'
+  include_vars: '{{ item }}'
+  with_first_found:
+    - "{{ ansible_facts['distribution'] }}-{{ ansible_facts['distribution_major_version'] }}.yml"
+    - "{{ ansible_facts['distribution'] }}.yml"
+    - "{{ ansible_facts['os_family'] }}.yml"
+    - 'default.yml'
+
+- name: 'install ntpsec'
+  package:
+    name: 'ntpsec'
+    state: present
+
+- name: 'configure ntpsec'
+  template:
+    dest: "{{ ntpsec_client_config_file }}"
+    src: 'ntp.conf.j2'
+    owner: root
+    group: root
+    mode: 0644
+  notify: 'restart ntpd'
+
+- name: 'remove the configuration directory'
+  file:
+    path: "{{ ntpsec_client_config_dir }}"
+    state: absent
+  notify: 'restart ntpd'
+
+# This installs a variant of NTPSec's own logrotate file which does not bail of the log file does not exist.
+# Since this role not set up a specific log file, this is useful on distributions that install the unchanged upstream file.
+- name: 'install logrotate file'
+  copy:
+    dest: '/etc/logrotate.d/ntpd'
+    src: 'logrotate-config.ntpd'
+    owner: root
+    group: root
+    mode: 0644
+
+- name: 'enable and start ntpd'
+  service:
+    name: "{{ ntpsec_client_service_name }}"
+    enabled: true
+    state: "{{ ansible_facts['is_chroot'] | ternary(omit, 'started') }}"

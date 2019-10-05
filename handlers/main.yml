@@ -1,0 +1,5 @@
+---
+- name: 'restart ntpd'
+  service:
+    name: "{{ ntpsec_client_service_name }}"
+    state: "{{ ansible_facts['is_chroot'] | ternary(omit, 'restarted') }}"

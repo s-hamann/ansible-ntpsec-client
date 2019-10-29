@@ -1,0 +1,1 @@
+ntpsec_client_drift_file: '/var/lib/ntp/drift/ntp.drift'

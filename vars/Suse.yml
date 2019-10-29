@@ -1,4 +1,0 @@
-ntpsec_client_service_name: 'ntpd'
-ntpsec_client_config_file: '/etc/ntp.conf'
-ntpsec_client_config_dir: '/etc/ntp.d'
-ntpsec_client_drift_file: '/var/lib/ntp/drift/ntp.drift'

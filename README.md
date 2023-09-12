@@ -15,8 +15,8 @@ Role Variables
 
 * `ntpsec_client_servers`  
   A list of servers to synchronize with.
-  The servers need to support NTP.
-  Defaults to `time.cloudflare.com:1234`.
+  The servers need to support NTS.
+  Defaults to `time.cloudflare.com`.
 
 License
 -------
